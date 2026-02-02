@@ -72,7 +72,7 @@ const Index = () => {
               Por isso, este não é um curso que entrega listas definitivas, nem proibições genéricas, nem respostas prontas para todos os casos.
             </p>
             
-            <p>Ele foi feito para pais que desejam:</p>
+            <p className="mt-8">Ele foi feito para pais que desejam:</p>
             
             <ul className="space-y-2 pl-4">
               <li>– menos medo</li>
@@ -81,7 +81,7 @@ const Index = () => {
               <li>– mais tranquilidade para decidir</li>
             </ul>
             
-            <p>
+            <p className="mt-8">
               Se você procura alguém para dizer exatamente o que pode ou não pode ser ouvido, este curso provavelmente não é para você.
             </p>
             
@@ -89,7 +89,7 @@ const Index = () => {
               Mas se você quer aprender como julgar, como orientar seus filhos com firmeza e calma, e como formar um gosto musical saudável sem impor, controlar ou terceirizar, então aqui você está em casa.
             </p>
             
-            <p>
+            <p className="mt-8">
               A música é o meio. O objetivo é formar pessoas com critério — começando pelos pais.
             </p>
           </div>
@@ -100,7 +100,7 @@ const Index = () => {
       <section className="px-5 py-12 md:px-6 md:py-16 lg:py-20">
         <div className="mx-auto max-w-xl">
           <h2 className="mb-6 font-serif text-xl font-medium text-foreground md:mb-8 md:text-2xl">
-            O que você vai encontrar
+            O que você vai encontrar ao longo do curso
           </h2>
           <ul className="space-y-3 text-base leading-relaxed text-foreground md:space-y-4 md:text-lg">
             <li>– Reflexões claras sobre como a música atua no cotidiano da criança</li>
@@ -135,7 +135,7 @@ const Index = () => {
             className="h-11 w-full px-10 font-sans text-base font-medium md:h-12 md:w-auto"
           >
             <a href={COURSE_URL} target="_blank" rel="noopener noreferrer">
-              Acessar o curso
+              Entrar no curso
             </a>
           </Button>
         </div>
