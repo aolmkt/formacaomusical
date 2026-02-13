@@ -16,7 +16,7 @@ const Index = () => {
   return (
     <main className="min-h-screen bg-background">
       {/* 1. Hero / Abertura */}
-      <section className="px-5 py-16 md:px-6 md:py-20 lg:py-24">
+      <section className="px-5 py-16 md:px-6 md:py-20 lg:py-[30px]">
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="font-serif text-2xl font-medium leading-tight tracking-tight text-foreground md:text-3xl lg:text-5xl">
             Formação musical em casa, com critério e tranquilidade
@@ -121,8 +121,8 @@ const Index = () => {
           <Button
             asChild
             size="lg"
-            className="h-11 w-full px-10 font-sans text-base font-medium md:h-12 md:w-auto"
-          >
+            className="h-11 w-full px-10 font-sans text-base font-medium md:h-12 md:w-auto">
+
             <a href={checkoutUrl} target="_blank" rel="noopener noreferrer">
               Entrar no curso
             </a>
@@ -140,8 +140,8 @@ const Index = () => {
           </p>
         </div>
       </footer>
-    </main>
-  );
+    </main>);
+
 };
 
 export default Index;
