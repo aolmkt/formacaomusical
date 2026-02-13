@@ -1,53 +1,34 @@
 
 
-## Ajustes Finos — Lapidação Final
+## Atualizar Link de Checkout com Repasse de Parametros
 
-Três micro-ajustes que elevam sem deturpar.
+### O que muda
 
----
+**1. URL do checkout**
+- De: `https://hotmart.com/seu-curso`
+- Para: `https://pay.hotmart.com/L104431597E`
 
-### Ajuste 1: Respiro Visual no Texto Longo
+**2. Repasse automatico de parametros da URL**
 
-Adicionar mais espaço vertical antes dos blocos-chave:
-- Antes de "Ele foi feito para pais que desejam:"
-- Antes de "Se você procura alguém para dizer exatamente…"
-- Antes de "A música é o meio."
+Criar uma funcao utilitaria que captura todos os parametros presentes na URL atual (ex: `?utm_source=instagram&utm_medium=stories&ref=amigo`) e os repassa automaticamente para o link da Hotmart.
 
-**Técnica:** Classes `mt-8` ou `mt-10` nesses parágrafos específicos para criar pausas visuais naturais na leitura.
+Exemplo: se o visitante acessa `seusite.com/?utm_source=instagram&sck=abc`, o botao vai apontar para `https://pay.hotmart.com/L104431597E?utm_source=instagram&sck=abc`.
 
----
-
-### Ajuste 2: Título Mais Humano
-
-**De:** "O que você vai encontrar"
-**Para:** "O que você vai encontrar ao longo do curso"
-
-Sutil. Mais conversa, menos índice.
+Isso permite rastreamento completo de origem do trafego.
 
 ---
 
-### Ajuste 3: Botão Mais Neutro
+### Detalhes tecnicos
 
-**De:** "Acessar o curso"
-**Para:** "Entrar no curso"
+**Arquivo:** `src/pages/Index.tsx`
 
-Mais humano. Menos comercial.
+- Atualizar `COURSE_URL` para `https://pay.hotmart.com/L104431597E`
+- Criar uma funcao `getCheckoutUrl()` que:
+  1. Le `window.location.search` para capturar os parametros da URL atual
+  2. Concatena esses parametros ao `COURSE_URL`
+  3. Preserva parametros que ja existam no link base (neste caso nenhum, mas por seguranca)
+- Usar `useMemo` para calcular o link uma vez ao carregar a pagina
+- Aplicar o link resultante no `href` do botao
 
----
-
-### O Que Não Muda
-
-- Nenhuma palavra do texto principal
-- Nenhum elemento novo
-- Nenhuma cor
-- Nenhuma animação
-- Zero marketing
-
----
-
-### Resultado
-
-A mesma página, com melhor respiração e tom ainda mais sereno.
-
-Lapidação, não reconstrução.
+Nenhuma mudanca visual. Nenhuma dependencia nova.
 
