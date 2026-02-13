@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import VideoPlayer from "@/components/VideoPlayer";
 
 const COURSE_URL = "https://pay.hotmart.com/L104431597E";
-
+const VIDEO_URL = "https://seu-dominio.com/video.m3u8"; // Substitua pela URL do seu vídeo
 const Index = () => {
   const checkoutUrl = useMemo(() => {
     const currentParams = window.location.search;
@@ -27,26 +27,7 @@ const Index = () => {
       {/* 2. Vídeo do Autor */}
       <section className="px-5 py-10 md:px-6 md:py-16">
         <div className="mx-auto max-w-2xl">
-          <div className="relative aspect-video overflow-hidden rounded border border-border bg-muted">
-            {/* Placeholder para o vídeo - substitua pelo embed real */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <button
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-background transition-colors hover:bg-muted md:h-16 md:w-16"
-                aria-label="Reproduzir vídeo"
-              >
-                <Play className="ml-0.5 h-5 w-5 text-foreground md:ml-1 md:h-6 md:w-6" />
-              </button>
-            </div>
-            {/* Para usar um vídeo real, substitua o div acima por:
-            <iframe
-              src="https://www.youtube.com/embed/SEU_VIDEO_ID"
-              title="Apresentação do curso"
-              className="absolute inset-0 h-full w-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-            */}
-          </div>
+          <VideoPlayer src={VIDEO_URL} />
         </div>
       </section>
 
