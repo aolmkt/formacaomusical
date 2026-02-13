@@ -1,82 +1,36 @@
 
 
-## Player de Video Customizado (estilo VTurb)
+## Ajuste de Layout Desktop — Primeira Dobra
 
-Player limpo e elegante, coerente com o tom da pagina. Sem elementos de marketing (sem contadores falsos, sem pulsacao, sem urgencia).
+### Problema
 
----
+No desktop, o hero tem `lg:py-40` (160px de padding em cima e embaixo), o que empurra o video para fora da primeira dobra. O visitante ve apenas o titulo com um oceano de espaco vazio. O video aparece cortado la embaixo.
 
-### O que o player vai ter
+### Solucao
 
-**Funcionalidades principais:**
-- Suporte a HLS (streaming .m3u8) e MP4 direto
-- Autoplay mutado ao carregar a pagina
-- Overlay "Clique para ouvir" discreto e elegante (sem pulsacao, sem vermelho)
-- Controles customizados: play/pause, barra de progresso, volume, tela cheia
-- Controles aparecem ao passar o mouse (hover) e somem apos alguns segundos
-- Protecao basica: sem botao direito no video, sem download nativo
+Reorganizar os espacamentos para que **titulo + video caibam juntos na primeira dobra** do desktop (viewport ~1080px de altura).
 
-**O que NAO vai ter (coerencia com o projeto):**
-- Sem contadores de pessoas assistindo
-- Sem mensagens de urgencia ("nao feche a pagina")
-- Sem pulsacao ou animacoes agressivas
-- Sem cores chamativas no overlay
+### Mudancas no arquivo `src/pages/Index.tsx`
 
----
+**Secao Hero (linha 19):**
+- De: `py-16 md:py-24 lg:py-40`
+- Para: `py-16 md:py-20 lg:py-24`
+- Reduz o padding vertical no desktop para dar espaco ao video
 
-### Arquitetura tecnica
+**Secao Video (linha 28):**
+- De: `py-10 md:py-16`
+- Para: `py-6 md:py-10 lg:py-12`
+- Aproxima o video do titulo sem colar
 
-**Novo arquivo:** `src/components/VideoPlayer.tsx`
-- Componente React autonomo e reutilizavel
-- Recebe `src` (URL do video) como prop
-- Detecta automaticamente se e HLS (.m3u8) ou MP4
-- Usa a biblioteca `hls.js` para streaming HLS (carregada dinamicamente)
-- Controles customizados construidos com HTML/CSS puro (Tailwind)
-- Estado gerenciado com `useState` e `useRef`
+**Secao Texto (linha 35):**
+- De: `py-12 md:py-16 lg:py-20`
+- Para: `py-12 md:py-16 lg:py-20` (mantem — ja esta correto)
 
-**Dependencia nova:** `hls.js`
-- Biblioteca padrao para streaming HLS no browser
-- Leve (~60kb gzipped)
-- Fallback nativo para Safari (que suporta HLS nativamente)
+### Resultado esperado
 
-**Modificacao:** `src/pages/Index.tsx`
-- Substituir o placeholder do video pelo componente `VideoPlayer`
-- Passar a URL do video como prop (facil de trocar depois)
+Na primeira dobra do desktop:
+- Titulo centralizado com respiro adequado (mas sem excesso)
+- Video visivel inteiro ou quase inteiro logo abaixo
+- Convite visual natural para rolar e ler o texto
 
----
-
-### Visual do player
-
-- Moldura com `rounded` e `border-border` (igual ao placeholder atual)
-- Overlay inicial: fundo semi-transparente escuro com icone de play e texto "Clique para assistir"
-- Barra de controles na parte inferior: fundo gradiente escuro transparente
-- Barra de progresso fina e elegante
-- Botoes minimalistas (play, volume, fullscreen)
-- Tudo em tons neutros, sem cores fortes
-
----
-
-### Fluxo do usuario
-
-1. Pagina carrega -> video inicia automaticamente mutado
-2. Overlay discreto aparece: "Clique para assistir com som"
-3. Usuario clica -> overlay some, som ativa, video continua de onde parou
-4. Controles aparecem no hover, somem apos 3 segundos
-5. Barra de progresso permite navegar no video
-6. Botao de fullscreen disponivel
-
----
-
-### Configuracao
-
-Para trocar o video, basta alterar uma unica constante no `Index.tsx`:
-
-```text
-const VIDEO_URL = "https://seu-dominio.com/video.m3u8";
-```
-
-Funciona com:
-- Links .m3u8 (HLS streaming, como o exemplo que voce enviou)
-- Links .mp4 diretos
-- Qualquer CDN ou storage (Cloudflare, S3, Google Cloud, etc.)
-
+Nenhuma mudanca de texto, estrutura ou componentes. Apenas espacamento vertical.
