@@ -16,7 +16,7 @@ const Index = () => {
   return (
     <main className="min-h-screen bg-background">
       {/* 1. Hero / Abertura */}
-      <section className="px-5 py-16 md:px-6 md:py-24 lg:py-40">
+      <section className="px-5 py-16 md:px-6 md:py-20 lg:py-24">
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="font-serif text-2xl font-medium leading-tight tracking-tight text-foreground md:text-3xl lg:text-5xl">
             Formação musical em casa, com critério e tranquilidade
@@ -25,7 +25,7 @@ const Index = () => {
       </section>
 
       {/* 2. Vídeo do Autor */}
-      <section className="px-5 py-10 md:px-6 md:py-16">
+      <section className="px-5 py-6 md:px-6 md:py-10 lg:py-12">
         <div className="mx-auto max-w-2xl">
           <VideoPlayer src={VIDEO_URL} />
         </div>
