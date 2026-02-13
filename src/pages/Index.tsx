@@ -1,10 +1,18 @@
+import { useMemo } from "react";
 import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Configure your external course link here
-const COURSE_URL = "https://hotmart.com/seu-curso"; // Substitua pelo link do seu curso
+const COURSE_URL = "https://pay.hotmart.com/L104431597E";
 
 const Index = () => {
+  const checkoutUrl = useMemo(() => {
+    const currentParams = window.location.search;
+    if (!currentParams) return COURSE_URL;
+    const base = new URL(COURSE_URL);
+    const incoming = new URLSearchParams(currentParams);
+    incoming.forEach((value, key) => base.searchParams.set(key, value));
+    return base.toString();
+  }, []);
   return (
     <main className="min-h-screen bg-background">
       {/* 1. Hero / Abertura */}
@@ -134,7 +142,7 @@ const Index = () => {
             size="lg"
             className="h-11 w-full px-10 font-sans text-base font-medium md:h-12 md:w-auto"
           >
-            <a href={COURSE_URL} target="_blank" rel="noopener noreferrer">
+            <a href={checkoutUrl} target="_blank" rel="noopener noreferrer">
               Entrar no curso
             </a>
           </Button>
