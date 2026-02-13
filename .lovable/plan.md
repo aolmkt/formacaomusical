@@ -1,34 +1,82 @@
 
 
-## Atualizar Link de Checkout com Repasse de Parametros
+## Player de Video Customizado (estilo VTurb)
 
-### O que muda
-
-**1. URL do checkout**
-- De: `https://hotmart.com/seu-curso`
-- Para: `https://pay.hotmart.com/L104431597E`
-
-**2. Repasse automatico de parametros da URL**
-
-Criar uma funcao utilitaria que captura todos os parametros presentes na URL atual (ex: `?utm_source=instagram&utm_medium=stories&ref=amigo`) e os repassa automaticamente para o link da Hotmart.
-
-Exemplo: se o visitante acessa `seusite.com/?utm_source=instagram&sck=abc`, o botao vai apontar para `https://pay.hotmart.com/L104431597E?utm_source=instagram&sck=abc`.
-
-Isso permite rastreamento completo de origem do trafego.
+Player limpo e elegante, coerente com o tom da pagina. Sem elementos de marketing (sem contadores falsos, sem pulsacao, sem urgencia).
 
 ---
 
-### Detalhes tecnicos
+### O que o player vai ter
 
-**Arquivo:** `src/pages/Index.tsx`
+**Funcionalidades principais:**
+- Suporte a HLS (streaming .m3u8) e MP4 direto
+- Autoplay mutado ao carregar a pagina
+- Overlay "Clique para ouvir" discreto e elegante (sem pulsacao, sem vermelho)
+- Controles customizados: play/pause, barra de progresso, volume, tela cheia
+- Controles aparecem ao passar o mouse (hover) e somem apos alguns segundos
+- Protecao basica: sem botao direito no video, sem download nativo
 
-- Atualizar `COURSE_URL` para `https://pay.hotmart.com/L104431597E`
-- Criar uma funcao `getCheckoutUrl()` que:
-  1. Le `window.location.search` para capturar os parametros da URL atual
-  2. Concatena esses parametros ao `COURSE_URL`
-  3. Preserva parametros que ja existam no link base (neste caso nenhum, mas por seguranca)
-- Usar `useMemo` para calcular o link uma vez ao carregar a pagina
-- Aplicar o link resultante no `href` do botao
+**O que NAO vai ter (coerencia com o projeto):**
+- Sem contadores de pessoas assistindo
+- Sem mensagens de urgencia ("nao feche a pagina")
+- Sem pulsacao ou animacoes agressivas
+- Sem cores chamativas no overlay
 
-Nenhuma mudanca visual. Nenhuma dependencia nova.
+---
+
+### Arquitetura tecnica
+
+**Novo arquivo:** `src/components/VideoPlayer.tsx`
+- Componente React autonomo e reutilizavel
+- Recebe `src` (URL do video) como prop
+- Detecta automaticamente se e HLS (.m3u8) ou MP4
+- Usa a biblioteca `hls.js` para streaming HLS (carregada dinamicamente)
+- Controles customizados construidos com HTML/CSS puro (Tailwind)
+- Estado gerenciado com `useState` e `useRef`
+
+**Dependencia nova:** `hls.js`
+- Biblioteca padrao para streaming HLS no browser
+- Leve (~60kb gzipped)
+- Fallback nativo para Safari (que suporta HLS nativamente)
+
+**Modificacao:** `src/pages/Index.tsx`
+- Substituir o placeholder do video pelo componente `VideoPlayer`
+- Passar a URL do video como prop (facil de trocar depois)
+
+---
+
+### Visual do player
+
+- Moldura com `rounded` e `border-border` (igual ao placeholder atual)
+- Overlay inicial: fundo semi-transparente escuro com icone de play e texto "Clique para assistir"
+- Barra de controles na parte inferior: fundo gradiente escuro transparente
+- Barra de progresso fina e elegante
+- Botoes minimalistas (play, volume, fullscreen)
+- Tudo em tons neutros, sem cores fortes
+
+---
+
+### Fluxo do usuario
+
+1. Pagina carrega -> video inicia automaticamente mutado
+2. Overlay discreto aparece: "Clique para assistir com som"
+3. Usuario clica -> overlay some, som ativa, video continua de onde parou
+4. Controles aparecem no hover, somem apos 3 segundos
+5. Barra de progresso permite navegar no video
+6. Botao de fullscreen disponivel
+
+---
+
+### Configuracao
+
+Para trocar o video, basta alterar uma unica constante no `Index.tsx`:
+
+```text
+const VIDEO_URL = "https://seu-dominio.com/video.m3u8";
+```
+
+Funciona com:
+- Links .m3u8 (HLS streaming, como o exemplo que voce enviou)
+- Links .mp4 diretos
+- Qualquer CDN ou storage (Cloudflare, S3, Google Cloud, etc.)
 
