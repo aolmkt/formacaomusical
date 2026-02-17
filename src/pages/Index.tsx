@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import VideoPlayer from "@/components/VideoPlayer";
 
 const COURSE_URL = "https://pay.hotmart.com/L104431597E";
-const VIDEO_URL = "https://seu-dominio.com/video.m3u8"; // Substitua pela URL do seu vídeo
+const VIDEO_URL = "https://cdn.jsdelivr.net/gh/aolcdn/formacaocnd@b6afa9aa19c72f5f3a0d3a8653864b62df222a97/playlist.m3u8";
 const Index = () => {
   const checkoutUrl = useMemo(() => {
     const currentParams = window.location.search;
