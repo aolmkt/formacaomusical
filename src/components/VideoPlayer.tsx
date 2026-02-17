@@ -122,7 +122,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
     }, 3000);
   }, []);
 
-  const handleOverlayClick = () => {
+  const unmute = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
     video.muted = false;
@@ -131,6 +131,30 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
     video.currentTime = 0;
     video.play().catch(() => {});
     resetHideTimer();
+  }, [resetHideTimer]);
+
+  // Global interaction listener: unmute on first user action
+  useEffect(() => {
+    const onFirstInteraction = () => {
+      if (videoRef.current && videoRef.current.muted) {
+        unmute();
+      }
+      document.removeEventListener("click", onFirstInteraction);
+      document.removeEventListener("touchstart", onFirstInteraction);
+      document.removeEventListener("scroll", onFirstInteraction);
+    };
+    document.addEventListener("click", onFirstInteraction, { once: false });
+    document.addEventListener("touchstart", onFirstInteraction, { once: false });
+    document.addEventListener("scroll", onFirstInteraction, { once: false });
+    return () => {
+      document.removeEventListener("click", onFirstInteraction);
+      document.removeEventListener("touchstart", onFirstInteraction);
+      document.removeEventListener("scroll", onFirstInteraction);
+    };
+  }, [unmute]);
+
+  const handleOverlayClick = () => {
+    unmute();
   };
 
   const togglePlay = () => {
