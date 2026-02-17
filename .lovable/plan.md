@@ -1,15 +1,31 @@
 
 
-## Atualizar URL do Video
+## Reiniciar video ao clicar no overlay
+
+### Problema
+
+Quando o usuario clica em "Clique para assistir com som", o video continua de onde estava (ja rodando mutado). O esperado e que o video reinicie do comeco com som.
 
 ### Mudanca
 
-**Arquivo:** `src/pages/Index.tsx`
+**Arquivo:** `src/components/VideoPlayer.tsx`
 
-Atualizar a constante `VIDEO_URL` na linha 5:
+Na funcao `handleOverlayClick`, adicionar `video.currentTime = 0` antes de dar play, para que o video volte ao inicio quando o usuario clicar no overlay.
 
-- De: `https://seu-dominio.com/video.m3u8`
-- Para: `https://cdn.jsdelivr.net/gh/aolcdn/formacaocnd@b6afa9aa19c72f5f3a0d3a8653864b62df222a97/playlist.m3u8`
+Linha aproximada 114, dentro de `handleOverlayClick`:
 
-Nenhuma outra mudanca necessaria. O player ja suporta HLS (.m3u8) e vai carregar o video automaticamente com autoplay mutado.
+```
+const handleOverlayClick = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = false;
+    setIsMuted(false);
+    setShowOverlay(false);
+    video.currentTime = 0;  // <-- adicionar esta linha
+    video.play().catch(() => {});
+    resetHideTimer();
+};
+```
+
+Nenhuma outra mudanca necessaria. Uma unica linha resolve.
 
