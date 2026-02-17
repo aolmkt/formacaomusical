@@ -128,6 +128,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
     video.muted = false;
     setIsMuted(false);
     setShowOverlay(false);
+    video.currentTime = 0;
     video.play().catch(() => {});
     resetHideTimer();
   };
