@@ -10,6 +10,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const hideTimerRef = useRef<number>(0);
+  const hlsCleanupRef = useRef<(() => void) | null>(null);
 
   const [showOverlay, setShowOverlay] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -39,27 +40,48 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
     const video = videoRef.current;
     if (!video) return;
 
+    let isCancelled = false;
+
+    hlsCleanupRef.current?.();
+    hlsCleanupRef.current = null;
+
+    const autoplayMuted = () => {
+      video.muted = true;
+      video.play().catch(() => {});
+    };
+
     if (isHLS) {
       import("hls.js").then(({ default: Hls }) => {
+        if (isCancelled) return;
+
         if (Hls.isSupported()) {
           const hls = new Hls();
           hls.loadSource(src);
           hls.attachMedia(video);
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            video.muted = true;
-            video.play().catch(() => {});
+            autoplayMuted();
           });
+
+          hlsCleanupRef.current = () => {
+            hls.destroy();
+            video.removeAttribute("src");
+            video.load();
+          };
         } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
           video.src = src;
-          video.muted = true;
-          video.play().catch(() => {});
+          autoplayMuted();
         }
       });
     } else {
       video.src = src;
-      video.muted = true;
-      video.play().catch(() => {});
+      autoplayMuted();
     }
+
+    return () => {
+      isCancelled = true;
+      hlsCleanupRef.current?.();
+      hlsCleanupRef.current = null;
+    };
   }, [src, isHLS]);
 
   // Time/progress updates
@@ -103,6 +125,12 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
   }, []);
 
   // Fullscreen change listener
+  useEffect(() => {
+    return () => {
+      clearTimeout(hideTimerRef.current);
+    };
+  }, []);
+
   useEffect(() => {
     const onFsChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
